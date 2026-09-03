@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
-import { useEffect } from "react";
+import { navItems } from "./Header";
 
 interface MobileMenuProps {
   open: boolean;
@@ -9,48 +10,59 @@ interface MobileMenuProps {
 
 const MobileMenu = ({ open, onClose }: MobileMenuProps) => {
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [open]);
 
-  const linkClass = "text-sm uppercase tracking-wide text-foreground/70 hover:text-foreground transition-colors";
-
   return (
     <>
       <div
-        className={`fixed inset-0 bg-foreground/50 z-40 transition-opacity duration-300 ${
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-40 bg-background/80 backdrop-blur-sm transition-opacity duration-300 ${
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
       />
 
-      <div
-        className={`fixed right-0 top-0 h-full w-64 bg-background z-50 transform transition-transform duration-300 shadow-lg ${
+      <aside
+        className={`fixed right-0 top-0 z-50 h-full w-[85%] max-w-sm bg-card border-l border-border shadow-plinth transition-transform duration-500 ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-md hover:bg-accent transition-colors focus:outline-none focus:ring-2 focus:ring-ring/30"
-          aria-label="Close menu"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        <div className="absolute inset-0 kuba-pattern opacity-40 pointer-events-none" />
 
-        <nav className="flex flex-col space-y-6 p-8 pt-16">
-          <Link to="/" onClick={onClose} className={linkClass}>Home</Link>
-          <Link to="/menu" onClick={onClose} className={linkClass}>Collection</Link>
-          <Link to="/about" onClick={onClose} className={linkClass}>About</Link>
-          <Link to="/contact" onClick={onClose} className={linkClass}>Contact</Link>
-          <Link to="/cart" onClick={onClose} className={linkClass}>Cart</Link>
+        <div className="relative flex items-center justify-between h-20 px-6 border-b border-border">
+          <span className="font-display tracking-[0.18em] text-sm text-primary">MNRDC</span>
+          <button
+            onClick={onClose}
+            className="p-2 text-foreground/70 hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label="Fermer le menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <nav className="relative flex flex-col p-6 gap-1">
+          <Link
+            to="/"
+            onClick={onClose}
+            className="font-display text-2xl py-3 border-b border-border/60 text-foreground hover:text-primary transition-colors"
+          >
+            Accueil
+          </Link>
+          {navItems.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={onClose}
+              className="font-display text-2xl py-3 border-b border-border/60 text-foreground hover:text-primary transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
-      </div>
+      </aside>
     </>
   );
 };

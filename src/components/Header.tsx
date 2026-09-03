@@ -1,97 +1,83 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Twitter, Menu, ShoppingBag } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Menu } from "lucide-react";
 import MobileMenu from "./MobileMenu";
+
+export const navItems = [
+  { to: "/collections", label: "Collections" },
+  { to: "/visite", label: "Visiter" },
+  { to: "/histoire", label: "Le musée" },
+  { to: "/contact", label: "Contact" },
+];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-  const isCart = location.pathname === "/cart";
-  const isMinimal = isHome || isCart;
+  const [scrolled, setScrolled] = useState(false);
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
 
-  const textClass = isHome
-    ? "text-white/80 hover:text-white"
-    : "text-foreground/70 hover:text-foreground";
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const logoClass = isHome
-    ? "text-white hover:text-white/80"
-    : "text-foreground hover:opacity-80";
+  const solid = scrolled || !isHome;
 
   return (
     <>
       <header
-        className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
-          isHome ? "bg-transparent" : "bg-background/95 backdrop-blur-sm shadow-sm"
+        className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+          solid
+            ? "bg-background/92 backdrop-blur-md border-b border-border"
+            : "bg-transparent border-b border-transparent"
         }`}
       >
-        <div className="flex justify-between items-center h-16 px-4 lg:px-12 max-w-7xl mx-auto">
-          {/* Left: nav links on inner pages, Contact Us on minimal pages */}
-          {isMinimal ? (
-            <Link
-              to="/contact"
-              className={`hidden lg:block text-sm tracking-wide transition-colors duration-200 ${textClass}`}
-            >
-              Contact Us
-            </Link>
-          ) : (
-            <nav className="hidden lg:flex items-center gap-6">
-              <Link
-                to="/menu"
-                className={`text-sm uppercase tracking-wide transition-colors duration-200 ${textClass}`}
-              >
-                Collection
-              </Link>
-              <Link
-                to="/about"
-                className={`text-sm uppercase tracking-wide transition-colors duration-200 ${textClass}`}
-              >
-                About
-              </Link>
-              <Link
-                to="/contact"
-                className={`text-sm uppercase tracking-wide transition-colors duration-200 ${textClass}`}
-              >
-                Contact
-              </Link>
-            </nav>
-          )}
-
-          {/* Center: Logo */}
-          <Link
-            to="/"
-            className={`font-serif text-xl lg:text-2xl font-medium tracking-tight transition-opacity ${logoClass}`}
-          >
-            Bellanova Gallery
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-6 h-20 px-5 lg:px-10">
+          <Link to="/" className="group flex items-center gap-3" aria-label="Accueil MNRDC">
+            <span className="relative grid place-items-center w-9 h-9 shrink-0">
+              <span className="absolute inset-0 rotate-45 border border-primary/70 transition-transform duration-500 group-hover:rotate-[135deg]" />
+              <span className="absolute inset-[7px] rotate-45 bg-gradient-gold" />
+            </span>
+            <span className="leading-none">
+              <span className="block font-display text-base lg:text-lg tracking-[0.16em] text-foreground">
+                MNRDC
+              </span>
+              <span className="block text-[0.6rem] uppercase tracking-[0.24em] text-muted-foreground mt-1">
+                Musée national · Kinshasa
+              </span>
+            </span>
           </Link>
 
-          {/* Right: icons */}
-          <div className="flex items-center gap-1">
-            {!isMinimal && (
-              <Link
-                to="/cart"
-                aria-label="Cart"
-                className={`p-2 transition-colors duration-200 ${textClass}`}
+          <nav className="hidden lg:flex items-center gap-8">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `text-xs uppercase tracking-[0.22em] transition-colors duration-300 link-underline ${
+                    isActive ? "text-primary" : "text-foreground/70 hover:text-foreground"
+                  }`
+                }
               >
-                <ShoppingBag className="w-5 h-5" />
-              </Link>
-            )}
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter profile"
-              className={`p-2 transition-colors duration-200 hidden sm:block ${textClass}`}
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <Link
+              to="/visite"
+              className="hidden sm:inline-flex items-center border border-primary/60 px-5 py-2.5 text-[0.68rem] uppercase tracking-[0.2em] text-primary transition-colors duration-300 hover:bg-primary hover:text-primary-foreground"
             >
-              <Twitter className="w-5 h-5" />
-            </a>
+              Préparer sa visite
+            </Link>
 
             <button
               onClick={() => setMenuOpen(true)}
-              className={`lg:hidden p-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-white/30 ${
-                isHome ? "text-white/80 hover:text-white" : "hover:bg-accent"
-              }`}
-              aria-label="Open menu"
+              className="lg:hidden p-2 text-foreground/80 hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label="Ouvrir le menu"
             >
               <Menu className="w-6 h-6" />
             </button>
