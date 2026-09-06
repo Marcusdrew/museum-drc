@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Bus, Camera, Clock, Ticket, Users } from "lucide-react";
-import costumeDanseur from "@/assets/mnrdc/costume-danseur.jpg";
+import kinshasaMalebo from "@/assets/mnrdc/kinshasa-malebo.jpg";
 import { useReveal } from "@/hooks/use-reveal";
 
 const Visite = () => {
@@ -90,10 +90,10 @@ const Visite = () => {
       {/* Bande visuelle */}
       <section className="relative mt-24 min-h-[60vh] flex items-center overflow-hidden">
         <img
-          src={costumeDanseur}
-          alt="Costume complet de danseur masqué présenté dans les salles du musée national"
+          src={kinshasaMalebo}
+          alt="Vue de Kinshasa et du Pool Malebo sur le fleuve Congo"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover object-top"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-background/75" />
         <div className="relative max-w-3xl mx-auto px-5 lg:px-10 text-center reveal">

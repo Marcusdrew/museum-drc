@@ -1,5 +1,5 @@
 import museeBatiment from "@/assets/mnrdc/musee-batiment.jpg";
-import kinshasaMalebo from "@/assets/mnrdc/kinshasa-malebo.jpg";
+import costumeDanseur from "@/assets/mnrdc/costume-danseur.jpg";
 import tissuShoowa from "@/assets/mnrdc/tissu-shoowa.jpg";
 import { useReveal } from "@/hooks/use-reveal";
 
@@ -69,10 +69,10 @@ const Histoire = () => {
             className="w-full h-72 lg:h-96 object-cover shadow-plinth"
           />
           <img
-            src={kinshasaMalebo}
-            alt="Kinshasa et le Pool Malebo sur le fleuve Congo"
+            src={costumeDanseur}
+            alt="Costume complet de danseur masqué présenté dans les salles du musée national"
             loading="lazy"
-            className="w-full h-72 lg:h-96 object-cover shadow-plinth"
+            className="w-full h-72 lg:h-96 object-cover object-top shadow-plinth"
           />
         </div>
       </div>
