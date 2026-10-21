@@ -33,7 +33,7 @@ const Index = () => {
   return (
     <main>
       {/* HÉRO */}
-      <section className="relative min-h-[100svh] flex items-end overflow-hidden">
+      <section className="relative min-h-[calc(100svh-3.5rem)] pt-28 flex items-end overflow-hidden">
         <img
           src={heroMusee}
           alt="Façade du Musée national de la RDC à Kinshasa, ornée de motifs en losange d'inspiration kuba, illuminée au crépuscule"
@@ -45,7 +45,7 @@ const Index = () => {
         <div className="absolute inset-0 kuba-pattern opacity-25 mix-blend-soft-light" />
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-5 lg:px-10 pb-16 lg:pb-24">
-          <p className="eyebrow animate-fade-up">Kinshasa · République démocratique du Congo</p>
+          <p className="eyebrow leading-relaxed animate-fade-up">Kinshasa · République démocratique du Congo</p>
 
           <h1
             className="mt-6 font-display text-[2.6rem] leading-[1.02] sm:text-6xl lg:text-8xl text-ivory animate-fade-up"
