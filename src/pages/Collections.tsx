@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { categories, oeuvres } from "@/data/collection";
 import { useReveal } from "@/hooks/use-reveal";
+import { Button } from "@/components/ui/button";
 
 const Collections = () => {
   const [active, setActive] = useState<string>("tout");
-  useReveal();
+  useReveal(active);
 
   const filtrees = active === "tout" ? oeuvres : oeuvres.filter((o) => o.categorie === active);
 
@@ -28,8 +29,10 @@ const Collections = () => {
         {/* Filtres */}
         <div className="mt-14 flex flex-wrap gap-3 border-b border-border pb-6">
           {categories.map((cat) => (
-            <button
+            <Button
+              variant="outline"
               key={cat.id}
+              aria-pressed={active === cat.id}
               onClick={() => setActive(cat.id)}
               className={`px-5 py-2.5 text-[0.68rem] uppercase tracking-[0.2em] border transition-all duration-300 ${
                 active === cat.id
@@ -38,7 +41,7 @@ const Collections = () => {
               }`}
             >
               {cat.label}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -65,7 +68,7 @@ const Collections = () => {
               </div>
 
               <div className="pt-5">
-                <div className="flex items-baseline justify-between gap-4">
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <h2 className="font-display text-xl text-foreground group-hover:text-primary transition-colors duration-300">
                     {o.nom}
                   </h2>

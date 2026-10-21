@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu } from "lucide-react";
 import MobileMenu from "./MobileMenu";
+import { Button } from "@/components/ui/button";
 
 export const navItems = [
   { to: "/collections", label: "Collections" },
@@ -30,7 +31,7 @@ const Header = () => {
       <header
         className={`fixed top-0 w-full z-50 transition-all duration-500 ${
           solid
-            ? "bg-background/92 backdrop-blur-md border-b border-border"
+             ? "bg-background/95 backdrop-blur-md border-b border-border"
             : "bg-transparent border-b border-transparent"
         }`}
       >
@@ -74,13 +75,17 @@ const Header = () => {
               Préparer sa visite
             </Link>
 
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setMenuOpen(true)}
               className="lg:hidden p-2 text-foreground/80 hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Ouvrir le menu"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
             >
               <Menu className="w-6 h-6" />
-            </button>
+            </Button>
           </div>
         </div>
       </header>

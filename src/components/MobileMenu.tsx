@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { navItems } from "./Header";
+import { Button } from "@/components/ui/button";
 
 interface MobileMenuProps {
   open: boolean;
@@ -10,11 +11,18 @@ interface MobileMenuProps {
 
 const MobileMenu = ({ open, onClose }: MobileMenuProps) => {
   useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
     };
-  }, [open]);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open, onClose]);
 
   return (
     <>
@@ -26,21 +34,26 @@ const MobileMenu = ({ open, onClose }: MobileMenuProps) => {
       />
 
       <aside
-        className={`fixed right-0 top-0 z-50 h-full w-[85%] max-w-sm bg-card border-l border-border shadow-plinth transition-transform duration-500 ${
-          open ? "translate-x-0" : "translate-x-full"
+        id="mobile-navigation"
+        aria-label="Navigation principale"
+        aria-hidden={!open}
+        className={`fixed right-0 top-0 z-50 h-dvh overflow-y-auto w-[85%] max-w-sm bg-card border-l border-border shadow-plinth transition-all duration-500 ${
+          open ? "translate-x-0 visible" : "translate-x-full invisible"
         }`}
       >
         <div className="absolute inset-0 kuba-pattern opacity-40 pointer-events-none" />
 
         <div className="relative flex items-center justify-between h-20 px-6 border-b border-border">
           <span className="font-display tracking-[0.18em] text-sm text-primary">MNRDC</span>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
             className="p-2 text-foreground/70 hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Fermer le menu"
           >
             <X className="w-5 h-5" />
-          </button>
+          </Button>
         </div>
 
         <nav className="relative flex flex-col p-6 gap-1">
